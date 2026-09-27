@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <!-- =========================================================
+         CONFIGURACIÓN BÁSICA DEL DOCUMENTO
+         ========================================================= -->
+
+    <meta charset="UTF-8">
+
+    <!-- Hace que la página se adapte correctamente a celulares -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Título que aparecerá en la pestaña del navegador -->
+    <title>Quiz de Elementos Contaminantes</title>
+
+
+    <!-- =========================================================
+         ESTILOS CSS
+         ========================================================= -->
+
+    <style>
+
+        /* ---------------------------------------------------------
+           CONFIGURACIÓN GENERAL
+           --------------------------------------------------------- */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+
+            /* Fondo general */
+            background:
+                radial-gradient(circle at top, #173b31, #071411 70%);
+
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ---------------------------------------------------------
+           CONTENEDOR PRINCIPAL
+           --------------------------------------------------------- */
+
+        .game {
+            width: 100%;
+            max-width: 950px;
+
+            background: rgba(10, 25, 21, 0.94);
+
+            border: 2px solid rgba(255,255,255,0.12);
+
+            border-radius: 25px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 0 40px rgba(0,0,0,0.5);
+
+            animation: aparecer 0.6s ease;
+        }
+
+
+        /* ---------------------------------------------------------
+           ANIMACIÓN DE APARICIÓN
+           --------------------------------------------------------- */
+
+        @keyframes aparecer {
+
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* ---------------------------------------------------------
+           ENCABEZADO
+           --------------------------------------------------------- */
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: clamp(24px, 5vw, 42px);
+
+            color: #7dffbd;
+
+            text-shadow:
+                0 0 10px rgba(80,255,170,0.4);
+        }
+
+        header p {
+            margin-top: 8px;
+            color: #a9bbb5;
+            font-size: 15px;
+        }
+
+
+        /* ---------------------------------------------------------
+           INFORMACIÓN DE LA PARTIDA
+           --------------------------------------------------------- */
+
+        .info {
+            display: flex;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .info-box {
+            flex: 1;
+
+            min-width: 130px;
+
+            background: rgba(255,255,255,0.06);
+
+            border-radius: 12px;
+
+            padding: 12px;
+
+            text-align: center;
+
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .info-box span {
+            display: block;
+            color: #8ea39b;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .info-box strong {
+            font-size: 22px;
+            color: white;
+        }
+
+
+        /* ---------------------------------------------------------
+           BARRA DE PROGRESO
+           --------------------------------------------------------- */
+
+        .progress-container {
+            width: 100%;
+
+            height: 9px;
+
+            background: #14251f;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            margin-bottom: 25px;
+        }
+
+        .progress {
+            height: 100%;
+
+            width: 0%;
+
+            background: linear-gradient(
+                90deg,
+                #43ff9a,
+                #b6ffd7
+            );
+
+            transition: width 0.5s ease;
+        }
+
+
+        /* ---------------------------------------------------------
+           TARJETA DE PREGUNTA
+           --------------------------------------------------------- */
+
+        .question-box {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.08),
+                    rgba(255,255,255,0.025)
+                );
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            text-align: center;
+
+            margin-bottom: 20px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            animation: preguntaEntrar 0.5s ease;
+        }
+
+
+        /* Animación de entrada de la pregunta */
+
+        @keyframes preguntaEntrar {
+
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+        }
+
+        .question-box h2 {
+            font-size: clamp(20px, 4vw, 30px);
+
+            line-height: 1.4;
+        }
+
+
+        /* ---------------------------------------------------------
+           RESPUESTAS
+           --------------------------------------------------------- */
+
+        .answers {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 15px;
+        }
+
+        .answer {
+
+            border: 2px solid rgba(255,255,255,0.12);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #152c25,
+                    #0d1d18
+                );
+
+            color: white;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-size: 16px;
+
+            min-height: 70px;
+
+            transition:
+                transform 0.2s,
+                border 0.2s,
+                background 0.2s,
+                box-shadow 0.2s;
+
+            animation: respuestaEntrar 0.5s ease backwards;
+        }
+
+
+        /* Animación individual de respuestas */
+
+        .answer:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .answer:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+
+        .answer:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .answer:nth-child(4) {
+            animation-delay: 0.20s;
+        }
+
+
+        @keyframes respuestaEntrar {
+
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* Efecto al pasar el mouse */
+
+        .answer:hover:not(:disabled) {
+
+            transform: translateY(-4px);
+
+            border-color: #61ffae;
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,0.3);
+        }
+
+
+        /* Letra A/B/C/D */
+
+        .letter {
+
+            display: inline-flex;
+
+            width: 32px;
+            height: 32px;
+
+            justify-content: center;
+            align-items: center;
+
+            background: #21473a;
+
+            border-radius: 50%;
+
+            margin-right: 10px;
+
+            font-weight: bold;
+
+            color: #7dffbd;
+        }
+
+
+        /* Respuesta correcta */
+
+        .correct {
+
+            background: #145c3b !important;
+
+            border-color: #4cff9a !important;
+
+            animation: correcta 0.5s ease;
+        }
+
+
+        @keyframes correcta {
+
+            50% {
+                transform: scale(1.04);
+            }
+        }
+
+
+        /* Respuesta incorrecta */
+
+        .wrong {
+
+            background: #672727 !important;
+
+            border-color: #ff6666 !important;
+
+            animation: incorrecta 0.4s ease;
+        }
+
+
+        @keyframes incorrecta {
+
+            25% {
+                transform: translateX(-7px);
+            }
+
+            50% {
+                transform: translateX(7px);
+            }
+
+            75% {
+                transform: translateX(-4px);
+            }
+        }
+
+
+        /* Respuesta eliminada por comodín */
+
+        .eliminated {
+
+            opacity: 0.15;
+
+            pointer-events: none;
+
+            filter: grayscale(1);
+
+            transform: scale(0.97);
+        }
+
+
+        /* ---------------------------------------------------------
+           PANEL DE COMODINES
+           --------------------------------------------------------- */
+
+        .lifelines {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 15px;
+
+            margin-top: 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .lifeline {
+
+            border: 2px solid #4effa0;
+
+            background: #10251d;
+
+            color: #7dffbd;
+
+            padding: 12px 20px;
+
+            border-radius: 30px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .lifeline:hover:not(:disabled) {
+
+            transform: scale(1.05);
+
+            background: #174533;
+        }
+
+        .lifeline:disabled {
+
+            opacity: 0.25;
+
+            cursor: not-allowed;
+        }
+
+
+        /* ---------------------------------------------------------
+           MENSAJE DE RESULTADO DE LA RESPUESTA
+           --------------------------------------------------------- */
+
+        #mensaje {
+
+            text-align: center;
+
+            min-height: 30px;
+
+            margin-top: 20px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+        }
+
+
+        /* ---------------------------------------------------------
+           BOTÓN SIGUIENTE
+           --------------------------------------------------------- */
+
+        #siguiente {
+
+            display: none;
+
+            margin: 20px auto 0;
+
+            padding: 14px 35px;
+
+            border: none;
+
+            border-radius: 30px;
+
+            background: #61ffae;
+
+            color: #071411;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        #siguiente:hover {
+
+            transform: scale(1.05);
+
+            box-shadow:
+                0 0 20px rgba(97,255,174,0.4);
+        }
+
+
+        /* ---------------------------------------------------------
+           PANTALLA FINAL
+           --------------------------------------------------------- */
+
+        #final {
+
+            display: none;
+
+            text-align: center;
+
+            animation: aparecer 0.7s ease;
+        }
+
+        #final h2 {
+
+            font-size: clamp(30px, 6vw, 50px);
+
+            color: #7dffbd;
+
+            margin-bottom: 15px;
+        }
+
+        .porcentaje {
+
+            font-size: clamp(50px, 10vw, 90px);
+
+            font-weight: bold;
+
+            color: white;
+
+            margin: 20px;
+        }
+
+
+        /* ---------------------------------------------------------
+           IMAGEN FINAL
+           --------------------------------------------------------- */
+
+        #imagenFinal {
+
+            display: none;
+
+            max-width: 90%;
+
+            max-height: 350px;
+
+            margin: 25px auto;
+
+            border-radius: 20px;
+
+            object-fit: contain;
+
+            box-shadow:
+                0 0 35px rgba(0,0,0,0.6);
+
+            animation: imagenAparecer 0.5s ease;
+        }
+
+
+        @keyframes imagenAparecer {
+
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+
+        /* ---------------------------------------------------------
+           BOTÓN REINICIAR
+           --------------------------------------------------------- */
+
+        #reiniciar {
+
+            display: none;
+
+            margin: 20px auto;
+
+            padding: 14px 30px;
+
+            border: 2px solid #61ffae;
+
+            border-radius: 30px;
+
+            background: transparent;
+
+            color: #61ffae;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        /* ---------------------------------------------------------
+           RESPONSIVE PARA CELULARES
+           --------------------------------------------------------- */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .game {
+                padding: 15px;
+                border-radius: 18px;
+            }
+
+            .answers {
+                grid-template-columns: 1fr;
+            }
+
+            .question-box {
+                padding: 20px;
+            }
+
+            .answer {
+                min-height: 60px;
+            }
+
+        }
+
+
+        /* ---------------------------------------------------------
+           RESPONSIVE PARA PANTALLAS MUY PEQUEÑAS
+           --------------------------------------------------------- */
+
+        @media (max-width: 400px) {
+
+            .info-box strong {
+                font-size: 18px;
+            }
+
+            .lifeline {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         CONTENEDOR PRINCIPAL DEL JUEGO
+         ========================================================= -->
+
+    <main class="game">
+
+
+        <!-- =====================================================
+             ENCABEZADO
+             ===================================================== -->
+
+        <header>
+
+            <h1>🧪 QUIZ DE QUÍMICA</h1>
+
+            <p>
+                Elementos contaminantes de la tabla periódica
+            </p>
+
+        </header>
+
+
+        <!-- =====================================================
+             INFORMACIÓN DE LA PARTIDA
+             ===================================================== -->
+
+        <section class="info">
+
+            <div class="info-box">
+
+                <span>Ronda</span>
+
+                <strong id="ronda">
+                    1 / 15
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>Aciertos</span>
+
+                <strong id="aciertos">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>Comodines</span>
+
+                <strong id="comodines">
+                    2
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             BARRA DE PROGRESO
+             ===================================================== -->
+
+        <div class="progress-container">
+
+            <div
+                id="progress"
+                class="progress">
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             ÁREA DEL QUIZ
+             ===================================================== -->
+
+        <section id="quiz">
+
+
+            <!-- Pregunta -->
+
+            <div class="question-box">
+
+                <h2 id="pregunta">
+                    Pregunta 1
+                </h2>
+
+            </div>
+
+
+            <!-- =================================================
+                 RESPUESTAS
+                 ================================================= -->
+
+            <div
+                id="respuestas"
+                class="answers">
+            </div>
+
+
+            <!-- =================================================
+                 COMODINES
+                 ================================================= -->
+
+            <div class="lifelines">
+
+                <button
+                    id="comodinBtn"
+                    class="lifeline"
+                    onclick="usarComodin()">
+
+                    🃏 Eliminar una opción
+                    <span id="cantidadComodin">
+                        (2)
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 MENSAJE
+                 ================================================= -->
+
+            <div id="mensaje"></div>
+
+
+            <!-- =================================================
+                 BOTÓN SIGUIENTE
+                 ================================================= -->
+
+            <button
+                id="siguiente"
+                onclick="siguientePregunta()">
+
+                Siguiente →
+
+            </button>
+
+        </section>
+
+
+        <!-- =====================================================
+             PANTALLA FINAL
+             ===================================================== -->
+
+        <section id="final">
+
+            <h2>
+                ¡Quiz terminado!
+            </h2>
+
+
+            <!-- Aquí aparecerá el porcentaje -->
+
+            <div
+                id="porcentaje"
+                class="porcentaje">
+            </div>
+
+
+            <!-- =================================================
+                 IMAGEN QUE APARECERÁ DURANTE 3 SEGUNDOS
+                 ================================================= -->
+
+            <img
+                id="imagenFinal"
+                src="">
+
+            <p id="mensajeFinal"></p>
+
+
+            <!-- =================================================
+                 BOTÓN PARA VOLVER A JUGAR
+                 ================================================= -->
+
+            <button
+                id="reiniciar"
+                onclick="location.reload()">
+
+                🔄 Volver a jugar
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+         TODO EL JUEGO FUNCIONA AQUÍ
+         ========================================================= -->
+
+    <script>
+
+
+        /* =========================================================
+           CONFIGURACIÓN GENERAL
+           ========================================================= */
+
+
+        // Número de rondas que tendrá cada partida.
+        // Puedes cambiarlo a 10, 15, 20, etc.
+        const TOTAL_RONDAS = 15;
+
+
+        // Número máximo de preguntas que puedes tener.
+        // Actualmente dejaremos espacio para 30.
+        const MAX_PREGUNTAS = 30;
+
+
+        // Número de comodines iniciales.
+        // El jugador empieza con exactamente 2.
+        const COMODINES_INICIALES = 2;
+
+
+        /* =========================================================
+           IMAGEN FINAL
+           ========================================================= */
+
+
+        // AQUÍ PONES LA IMAGEN QUE QUIERES MOSTRAR AL FINAL.
+
+        // Si subes una imagen llamada "final.jpg"
+        // a la misma carpeta que este index.html,
+        // puedes poner:
+        //
+        // const IMAGEN_FINAL = "final.jpg";
+
+        const IMAGEN_FINAL = "";
+
+
+        // Tiempo que permanecerá visible la imagen.
+        // 3000 milisegundos = 3 segundos.
+        const TIEMPO_IMAGEN = 3000;
+
+
+
+        /* =========================================================
+           BANCO DE PREGUNTAS
+           
+           AQUÍ VAS A ESCRIBIR LAS 30 PREGUNTAS.
+           ========================================================= */
+
+
+        const PREGUNTAS = [
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 1
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 1",
+
+                opciones: [
+                    "Pregunta 1 respuesta correcta",
+                    "Pregunta 1 respuesta incorrecta",
+                    "Pregunta 1 respuesta incorrecta",
+                    "Pregunta 1 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 2
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 2",
+
+                opciones: [
+                    "Pregunta 2 respuesta incorrecta",
+                    "Pregunta 2 respuesta correcta",
+                    "Pregunta 2 respuesta incorrecta",
+                    "Pregunta 2 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 3
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 3",
+
+                opciones: [
+                    "Pregunta 3 respuesta incorrecta",
+                    "Pregunta 3 respuesta incorrecta",
+                    "Pregunta 3 respuesta correcta",
+                    "Pregunta 3 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 4
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 4",
+
+                opciones: [
+                    "Pregunta 4 respuesta incorrecta",
+                    "Pregunta 4 respuesta incorrecta",
+                    "Pregunta 4 respuesta incorrecta",
+                    "Pregunta 4 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 5
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 5",
+
+                opciones: [
+                    "Pregunta 5 respuesta correcta",
+                    "Pregunta 5 respuesta incorrecta",
+                    "Pregunta 5 respuesta incorrecta",
+                    "Pregunta 5 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 6
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 6",
+
+                opciones: [
+                    "Pregunta 6 respuesta incorrecta",
+                    "Pregunta 6 respuesta correcta",
+                    "Pregunta 6 respuesta incorrecta",
+                    "Pregunta 6 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 7
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 7",
+
+                opciones: [
+                    "Pregunta 7 respuesta incorrecta",
+                    "Pregunta 7 respuesta incorrecta",
+                    "Pregunta 7 respuesta correcta",
+                    "Pregunta 7 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 8
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 8",
+
+                opciones: [
+                    "Pregunta 8 respuesta incorrecta",
+                    "Pregunta 8 respuesta incorrecta",
+                    "Pregunta 8 respuesta incorrecta",
+                    "Pregunta 8 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 9
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 9",
+
+                opciones: [
+                    "Pregunta 9 respuesta correcta",
+                    "Pregunta 9 respuesta incorrecta",
+                    "Pregunta 9 respuesta incorrecta",
+                    "Pregunta 9 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 10
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 10",
+
+                opciones: [
+                    "Pregunta 10 respuesta incorrecta",
+                    "Pregunta 10 respuesta correcta",
+                    "Pregunta 10 respuesta incorrecta",
+                    "Pregunta 10 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 11
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 11",
+
+                opciones: [
+                    "Pregunta 11 respuesta incorrecta",
+                    "Pregunta 11 respuesta incorrecta",
+                    "Pregunta 11 respuesta correcta",
+                    "Pregunta 11 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 12
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 12",
+
+                opciones: [
+                    "Pregunta 12 respuesta incorrecta",
+                    "Pregunta 12 respuesta incorrecta",
+                    "Pregunta 12 respuesta incorrecta",
+                    "Pregunta 12 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 13
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 13",
+
+                opciones: [
+                    "Pregunta 13 respuesta correcta",
+                    "Pregunta 13 respuesta incorrecta",
+                    "Pregunta 13 respuesta incorrecta",
+                    "Pregunta 13 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 14
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 14",
+
+                opciones: [
+                    "Pregunta 14 respuesta incorrecta",
+                    "Pregunta 14 respuesta correcta",
+                    "Pregunta 14 respuesta incorrecta",
+                    "Pregunta 14 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 15
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 15",
+
+                opciones: [
+                    "Pregunta 15 respuesta incorrecta",
+                    "Pregunta 15 respuesta incorrecta",
+                    "Pregunta 15 respuesta correcta",
+                    "Pregunta 15 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 16
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 16",
+
+                opciones: [
+                    "Pregunta 16 respuesta incorrecta",
+                    "Pregunta 16 respuesta incorrecta",
+                    "Pregunta 16 respuesta incorrecta",
+                    "Pregunta 16 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 17
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 17",
+
+                opciones: [
+                    "Pregunta 17 respuesta correcta",
+                    "Pregunta 17 respuesta incorrecta",
+                    "Pregunta 17 respuesta incorrecta",
+                    "Pregunta 17 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 18
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 18",
+
+                opciones: [
+                    "Pregunta 18 respuesta incorrecta",
+                    "Pregunta 18 respuesta correcta",
+                    "Pregunta 18 respuesta incorrecta",
+                    "Pregunta 18 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 19
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 19",
+
+                opciones: [
+                    "Pregunta 19 respuesta incorrecta",
+                    "Pregunta 19 respuesta incorrecta",
+                    "Pregunta 19 respuesta correcta",
+                    "Pregunta 19 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 20
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 20",
+
+                opciones: [
+                    "Pregunta 20 respuesta incorrecta",
+                    "Pregunta 20 respuesta incorrecta",
+                    "Pregunta 20 respuesta incorrecta",
+                    "Pregunta 20 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 21
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 21",
+
+                opciones: [
+                    "Pregunta 21 respuesta correcta",
+                    "Pregunta 21 respuesta incorrecta",
+                    "Pregunta 21 respuesta incorrecta",
+                    "Pregunta 21 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 22
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 22",
+
+                opciones: [
+                    "Pregunta 22 respuesta incorrecta",
+                    "Pregunta 22 respuesta correcta",
+                    "Pregunta 22 respuesta incorrecta",
+                    "Pregunta 22 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 23
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 23",
+
+                opciones: [
+                    "Pregunta 23 respuesta incorrecta",
+                    "Pregunta 23 respuesta incorrecta",
+                    "Pregunta 23 respuesta correcta",
+                    "Pregunta 23 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 24
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 24",
+
+                opciones: [
+                    "Pregunta 24 respuesta incorrecta",
+                    "Pregunta 24 respuesta incorrecta",
+                    "Pregunta 24 respuesta incorrecta",
+                    "Pregunta 24 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 25
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 25",
+
+                opciones: [
+                    "Pregunta 25 respuesta correcta",
+                    "Pregunta 25 respuesta incorrecta",
+                    "Pregunta 25 respuesta incorrecta",
+                    "Pregunta 25 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 26
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 26",
+
+                opciones: [
+                    "Pregunta 26 respuesta incorrecta",
+                    "Pregunta 26 respuesta correcta",
+                    "Pregunta 26 respuesta incorrecta",
+                    "Pregunta 26 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 27
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 27",
+
+                opciones: [
+                    "Pregunta 27 respuesta incorrecta",
+                    "Pregunta 27 respuesta incorrecta",
+                    "Pregunta 27 respuesta correcta",
+                    "Pregunta 27 respuesta incorrecta"
+                ],
+
+                correcta: 2
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 28
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 28",
+
+                opciones: [
+                    "Pregunta 28 respuesta incorrecta",
+                    "Pregunta 28 respuesta incorrecta",
+                    "Pregunta 28 respuesta incorrecta",
+                    "Pregunta 28 respuesta correcta"
+                ],
+
+                correcta: 3
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 29
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 29",
+
+                opciones: [
+                    "Pregunta 29 respuesta correcta",
+                    "Pregunta 29 respuesta incorrecta",
+                    "Pregunta 29 respuesta incorrecta",
+                    "Pregunta 29 respuesta incorrecta"
+                ],
+
+                correcta: 0
+            },
+
+
+            /*
+             -------------------------------------------------------
+             PREGUNTA 30
+             -------------------------------------------------------
+            */
+
+            {
+                pregunta: "Pregunta 30",
+
+                opciones: [
+                    "Pregunta 30 respuesta incorrecta",
+                    "Pregunta 30 respuesta correcta",
+                    "Pregunta 30 respuesta incorrecta",
+                    "Pregunta 30 respuesta incorrecta"
+                ],
+
+                correcta: 1
+            }
+
+        ];
+
+
+
+        /* =========================================================
+           VARIABLES DEL JUEGO
+           ========================================================= */
+
+
+        // Aquí estarán las preguntas seleccionadas para esta partida.
+        let partida = [];
+
+
+        // Número de pregunta actual.
+        let preguntaActual = 0;
+
+
+        // Cantidad de respuestas correctas.
+        let aciertos = 0;
+
+
+        // Cantidad de comodines disponibles.
+        let comodines = COMODINES_INICIALES;
+
+
+        // Indica si el jugador ya respondió la pregunta actual.
+        let respondida = false;
+
+
+        // Guarda temporalmente las opciones mezcladas.
+        let opcionesActuales = [];
+
+
+        // Guarda cuál de las opciones mezcladas es correcta.
+        let indiceCorrecto = -1;
+
+
+
+        /* =========================================================
+           FUNCIÓN PARA MEZCLAR UN ARRAY
+           ========================================================= */
+
+
+        // Fisher-Yates.
+        // Esta función mezcla completamente los elementos.
+        function mezclar(array) {
+
+            const copia = [...array];
+
+            for (
+                let i = copia.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(Math.random() * (i + 1));
+
+                [
+                    copia[i],
+                    copia[j]
+                ] =
+                [
+                    copia[j],
+                    copia[i]
+                ];
+            }
+
+            return copia;
+        }
+
+
+
+        /* =========================================================
+           PREPARAR LA PARTIDA
+           ========================================================= */
+
+
+        function prepararPartida() {
+
+            // Comprobamos que existan suficientes preguntas.
+            if (PREGUNTAS.length < TOTAL_RONDAS) {
+
+                alert(
+                    "No hay suficientes preguntas para las rondas configuradas."
+                );
+
+                return;
+            }
+
+
+            // Mezclamos TODAS las preguntas.
+            const preguntasMezcladas =
+                mezclar(PREGUNTAS);
+
+
+            // Tomamos solamente las necesarias.
+            partida =
+                preguntasMezcladas.slice(
+                    0,
+                    TOTAL_RONDAS
+                );
+
+
+            // Mostramos la primera.
+            mostrarPregunta();
+
+        }
+
+
+
+        /* =========================================================
+           MOSTRAR PREGUNTA
+           ========================================================= */
+
+
+        function mostrarPregunta() {
+
+            respondida = false;
+
+
+            // Actualizamos el número de ronda.
+            document.getElementById("ronda").textContent =
+                `${preguntaActual + 1} / ${TOTAL_RONDAS}`;
+
+
+            // Actualizamos contador de aciertos.
+            document.getElementById("aciertos").textContent =
+                aciertos;
+
+
+            // Actualizamos comodines.
+            document.getElementById("comodines").textContent =
+                comodines;
+
+            document.getElementById("cantidadComodin").textContent =
+                `(${comodines})`;
+
+
+            // Actualizamos barra de progreso.
+            const progreso =
+                (preguntaActual / TOTAL_RONDAS) * 100;
+
+            document.getElementById("progress").style.width =
+                `${progreso}%`;
+
+
+            // Obtenemos la pregunta actual.
+            const pregunta =
+                partida[preguntaActual];
+
+
+            // Mostramos el texto.
+            document.getElementById("pregunta").textContent =
+                pregunta.pregunta;
+
+
+            // =====================================================
+            // MEZCLAMOS LAS RESPUESTAS
+            // =====================================================
+
+            // Creamos objetos que guardan:
+            //
+            // texto = texto de la respuesta
+            // correcta = si es la respuesta correcta
+
+            opcionesActuales =
+                pregunta.opciones.map(
+                    (texto, indice) => ({
+
+                        texto: texto,
+
+                        correcta:
+                            indice === pregunta.correcta
+
+                    })
+                );
+
+
+            // Mezclamos las respuestas.
+            opcionesActuales =
+                mezclar(opcionesActuales);
+
+
+            // Buscamos dónde quedó la correcta.
+            indiceCorrecto =
+                opcionesActuales.findIndex(
+                    opcion => opcion.correcta
+                );
+
+
+            // Limpiamos las respuestas anteriores.
+            const contenedor =
+                document.getElementById("respuestas");
+
+            contenedor.innerHTML = "";
+
+
+            // Letras que aparecerán en pantalla.
+            const letras =
+                ["A", "B", "C", "D"];
+
+
+            // Creamos los cuatro botones.
+            opcionesActuales.forEach(
+                (opcion, indice) => {
+
+                    const boton =
+                        document.createElement("button");
+
+                    boton.className = "answer";
+
+
+                    // Creamos la letra.
+                    const letra =
+                        document.createElement("span");
+
+                    letra.className = "letter";
+
+                    letra.textContent =
+                        letras[indice];
+
+
+                    // Agregamos la letra.
+                    boton.appendChild(letra);
+
+
+                    // Agregamos el texto.
+                    boton.appendChild(
+                        document.createTextNode(
+                            opcion.texto
+                        )
+                    );
+
+
+                    // Al hacer clic se verifica.
+                    boton.onclick =
+                        () => responder(indice);
+
+
+                    // Agregamos el botón.
+                    contenedor.appendChild(boton);
+
+                }
+            );
+
+
+            // Limpiamos mensaje anterior.
+            document.getElementById("mensaje").textContent =
+                "";
+
+
+            // Ocultamos siguiente.
+            document.getElementById("siguiente").style.display =
+                "none";
+
+
+            // Activamos el comodín si quedan.
+            document.getElementById("comodinBtn").disabled =
+                comodines <= 0;
+
+
+            // Reiniciamos la animación de la pregunta.
+            const caja =
+                document.querySelector(".question-box");
+
+            caja.style.animation = "none";
+
+            void caja.offsetWidth;
+
+            caja.style.animation =
+                "preguntaEntrar 0.5s ease";
+
+        }
+
+
+
+        /* =========================================================
+           RESPONDER PREGUNTA
+           ========================================================= */
+
+
+        function responder(indice) {
+
+            // Evita responder dos veces.
+            if (respondida) return;
+
+
+            respondida = true;
+
+
+            // Obtenemos todos los botones.
+            const botones =
+                document.querySelectorAll(".answer");
+
+
+            // Desactivamos todos.
+            botones.forEach(
+                boton => boton.disabled = true
+            );
+
+
+            // Comprobamos si acertó.
+            if (indice === indiceCorrecto) {
+
+                aciertos++;
+
+                botones[indice].classList.add(
+                    "correct"
+                );
+
+                document.getElementById("mensaje").textContent =
+                    "✓ ¡Respuesta correcta!";
+
+                document.getElementById("mensaje").style.color =
+                    "#61ffae";
+
+            }
+
+            else {
+
+                botones[indice].classList.add(
+                    "wrong"
+                );
+
+                botones[indiceCorrecto].classList.add(
+                    "correct"
+                );
+
+                document.getElementById("mensaje").textContent =
+                    "✗ Respuesta incorrecta";
+
+                document.getElementById("mensaje").style.color =
+                    "#ff7777";
+            }
+
+
+            // Ocultamos el comodín.
+            document.getElementById("comodinBtn").disabled =
+                true;
+
+
+            // Mostramos botón siguiente.
+            document.getElementById("siguiente").style.display =
+                "block";
+
+
+            // Si es la última pregunta,
+            // cambiamos el texto del botón.
+            if (
+                preguntaActual ===
+                TOTAL_RONDAS - 1
+            ) {
+
+                document.getElementById("siguiente").textContent =
+                    "Ver resultado →";
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           COMODÍN
+           
+           ELIMINA UNA OPCIÓN INCORRECTA.
+           ========================================================= */
+
+
+        function usarComodin() {
+
+            // Si ya respondió no puede utilizarlo.
+            if (respondida) return;
+
+
+            // Si no quedan comodines no hace nada.
+            if (comodines <= 0) return;
+
+
+            // Buscamos las opciones incorrectas.
+            const incorrectas = [];
+
+            opcionesActuales.forEach(
+                (opcion, indice) => {
+
+                    if (!opcion.correcta) {
+
+                        incorrectas.push(indice);
+
+                    }
+
+                }
+            );
+
+
+            // Elegimos una incorrecta al azar.
+            const indiceEliminar =
+                incorrectas[
+                    Math.floor(
+                        Math.random() *
+                        incorrectas.length
+                    )
+                ];
+
+
+            // Obtenemos los botones.
+            const botones =
+                document.querySelectorAll(".answer");
+
+
+            // La eliminamos visualmente.
+            botones[
+                indiceEliminar
+            ].classList.add(
+                "eliminated"
+            );
+
+
+            // Gastamos un comodín.
+            comodines--;
+
+
+            // Actualizamos pantalla.
+            document.getElementById("comodines").textContent =
+                comodines;
+
+            document.getElementById("cantidadComodin").textContent =
+                `(${comodines})`;
+
+
+            // Si ya no quedan, desactivamos.
+            if (comodines <= 0) {
+
+                document.getElementById("comodinBtn").disabled =
+                    true;
+
+            }
+
+        }
+
+
+
+        /* =========================================================
+           SIGUIENTE PREGUNTA
+           ========================================================= */
+
+
+        function siguientePregunta() {
+
+            // Pasamos a la siguiente.
+            preguntaActual++;
+
+
+            // Si ya terminamos las rondas...
+            if (
+                preguntaActual >=
+                TOTAL_RONDAS
+            ) {
+
+                terminarQuiz();
+
+                return;
+            }
+
+
+            // Mostramos la siguiente.
+            mostrarPregunta();
+
+        }
+
+
+
+        /* =========================================================
+           TERMINAR QUIZ
+           ========================================================= */
+
+
+        function terminarQuiz() {
+
+            // Ocultamos el juego.
+            document.getElementById("quiz").style.display =
+                "none";
+
+
+            // Calculamos porcentaje.
+            const porcentaje =
+                Math.round(
+                    (aciertos / TOTAL_RONDAS) * 100
+                );
+
+
+            // Mostramos porcentaje.
+            document.getElementById("porcentaje").textContent =
+                `${porcentaje}%`;
+
+
+            // Mensaje dependiendo del resultado.
+            let mensaje = "";
+
+
+            if (porcentaje === 100) {
+
+                mensaje =
+                    "¡Excelente! Respondiste todas correctamente.";
+
+            }
+
+            else if (porcentaje >= 80) {
+
+                mensaje =
+                    "¡Muy buen resultado!";
+
+            }
+
+            else if (porcentaje >= 60) {
+
+                mensaje =
+                    "Buen trabajo. Hay algunos temas por reforzar.";
+
+            }
+
+            else {
+
+                mensaje =
+                    "Puedes repasar los elementos y volver a intentarlo.";
+
+            }
+
+
+            document.getElementById("mensajeFinal").textContent =
+                mensaje;
+
+
+            // Mostramos pantalla final.
+            document.getElementById("final").style.display =
+                "block";
+
+
+            // =====================================================
+            // IMAGEN FINAL
+            // =====================================================
+
+            mostrarImagenFinal();
+
+        }
+
+
+
+        /* =========================================================
+           MOSTRAR IMAGEN DURANTE 3 SEGUNDOS
+           ========================================================= */
+
+
+        function mostrarImagenFinal() {
+
+            // Si no pusiste imagen, simplemente mostramos
+            // el botón de reinicio.
+            if (!IMAGEN_FINAL) {
+
+                document.getElementById("reiniciar").style.display =
+                    "block";
+
+                return;
+            }
+
+
+            // Obtenemos la imagen.
+            const imagen =
+                document.getElementById("imagenFinal");
+
+
+            // Asignamos la imagen.
+            imagen.src =
+                IMAGEN_FINAL;
+
+
+            // La mostramos.
+            imagen.style.display =
+                "block";
+
+
+            // Después de 3 segundos la ocultamos.
+            setTimeout(
+                () => {
+
+                    imagen.style.display =
+                        "none";
+
+
+                    // Mostramos reinicio.
+                    document.getElementById("reiniciar").style.display =
+                        "block";
+
+                },
+
+                TIEMPO_IMAGEN
+            );
+
+        }
+
+
+
+        /* =========================================================
+           INICIAR EL JUEGO
+           ========================================================= */
+
+
+        prepararPartida();
+
+
+    </script>
+
+</body>
+
+</html>
