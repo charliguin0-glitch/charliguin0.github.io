@@ -12,7 +12,7 @@
     <!-- Hace que la página sea responsiva en celulares -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Quiz de Química</title>
+    <title>Quiz de elementos contaminantes</title>
 
 
     <!-- =========================================================
@@ -1651,12 +1651,12 @@
 
 
     // Número de preguntas que tendrá el quiz normal.
-    const TOTAL_RONDAS = 6;
+    const TOTAL_RONDAS = 15;
 
 
     // Número máximo de preguntas normales.
     // Puedes agregar hasta 30.
-    const MAX_PREGUNTAS = 30;
+    const MAX_PREGUNTAS = 60;
 
 
     // Número de preguntas del desempate.
@@ -2109,8 +2109,9 @@
             "Cenizas volcánicas"
         ],
         correcta: 1
-    }
-           {
+    },
+
+    {
         pregunta: "¿Cuáles son los cuatro factores presentados para determinar cuándo un elemento se convierte en contaminante?",
         opciones: [
             "Masa atómica, densidad, número atómico y solubilidad.",
@@ -2220,7 +2221,175 @@
         correcta: 0
     },
 
-];
+
+    {
+        pregunta: "¿Qué compuesto neurotóxico se genera cuando las bacterias del agua o del suelo transforman el mercurio presente en el ambiente?",
+        opciones: [
+            "Arsenopirita.",
+            "Cromo hexavalente.",
+            "Metilmercurio.",
+            "Nitrato de plomo."
+        ],
+        correcta: 2
+    },
+
+    {
+        pregunta: "¿Cuál es una causa común de envenenamiento en aves y fauna acuática por plomo (Pb)?",
+        opciones: [
+            "La ingestión directa de perdigones de caza y contrapesos de pesca abandonados.",
+            "La absorción foliar de vapor de plomo proveniente del fitoplancton.",
+            "La fijación biológica realizada por bacterias del suelo.",
+            "La inhalación de oxígeno enriquecido con partículas de plomo puro."
+        ],
+        correcta: 0
+    },
+
+    {
+        pregunta: "¿Qué condición en el suelo incrementa la solubilidad del cadmio (Cd), facilitando que sea absorbido por las plantas?",
+        opciones: [
+            "El aumento de la salinidad del agua subterránea.",
+            "Suelos con mayor acidez (pH bajo).",
+            "La presencia de grandes cantidades de materia orgánica congelada.",
+            "La compactación excesiva del suelo por maquinaria."
+        ],
+        correcta: 1
+    },
+
+    {
+        pregunta: "¿Qué hortalizas de hoja presentan tasas de translocación elevadas, movilizando el cadmio absorbido por las raíces directamente hacia sus hojas?",
+        opciones: [
+            "Papa, zanahoria y remolacha.",
+            "Cacao y granos de café.",
+            "Lechuga, acelga y espinaca.",
+            "Maíz, trigo y cebada."
+        ],
+        correcta: 2
+    },
+
+    {
+        pregunta: "¿Por qué el arsénico (As) se destaca respecto a otros contaminantes ambientales?",
+        opciones: [
+            "Porque es un metal pesado sintético fabricado exclusivamente por la industria del acero.",
+            "Porque es un metaloide cuya principal fuente de contaminación puede ser completamente natural (rocas y minerales como la arsenopirita).",
+            "Porque no interactúa con el agua subterránea ni con las raíces.",
+            "Porque se degrada fácilmente en presencia de luz solar."
+        ],
+        correcta: 1
+    },
+
+    {
+        pregunta: "¿Cómo varía la peligrosidad del Cromo según su estado de oxidación?",
+        opciones: [
+            "El Cr(III) es altamente soluble y cancerígeno, mientras que el Cr(VI) es un nutriente esencial.",
+            "El Cr(III) es poco móvil y de baja toxicidad, mientras que el Cr(VI) es móvil, soluble, carcinogénico y mutagénico.",
+            "Ambos estados de oxidación tienen exactamente el mismo riesgo toxicológico.",
+            "El Cr(VI) solo afecta al aire y no puede disolverse en agua subterránea."
+        ],
+        correcta: 1
+    },
+
+
+
+ ];
+
+
+    /* =============================================================
+       BANCO DE PREGUNTAS DE DESEMPATE
+
+       Estas preguntas se utilizan únicamente en la ronda de
+       desempate y están enfocadas en casos reales de México.
+       ============================================================= */
+
+    const PREGUNTAS_DESEMPATE = [
+
+        {
+            pregunta: "¿Qué elementos contaminantes fueron identificados por SEMARNAT en el predio de la ex Fundidora Ávalos, en Chihuahua?",
+            opciones: [
+                "Mercurio, cromo y níquel.",
+                "Arsénico, plomo y cadmio.",
+                "Uranio, torio y radio.",
+                "Litio, sodio y potasio."
+            ],
+            correcta: 1
+        },
+
+        {
+            pregunta: "¿Qué actividad industrial estuvo relacionada históricamente con la contaminación de la zona de Ávalos, Chihuahua?",
+            opciones: [
+                "Una planta procesadora y fundidora de plomo.",
+                "Una planta de producción de fertilizantes nitrogenados.",
+                "Una fábrica de vidrio sin procesos metalúrgicos.",
+                "Una planta de tratamiento de agua potable."
+            ],
+            correcta: 0
+        },
+
+        {
+            pregunta: "¿Qué radioisótopo estuvo involucrado en la crisis radiológica de Ciudad Juárez de 1984?",
+            opciones: [
+                "Cesio-137.",
+                "Yodo-131.",
+                "Cobalto-60.",
+                "Uranio-238."
+            ],
+            correcta: 2
+        },
+
+        {
+            pregunta: "¿Cómo llegó el material radiactivo del accidente de Ciudad Juárez a dispersarse entre chatarra y productos de acero?",
+            opciones: [
+                "Una fuente de teleterapia fue llevada a un depósito de chatarra y terminó mezclándose con el material reciclado.",
+                "El radioisótopo fue liberado por una central nuclear en funcionamiento.",
+                "El material fue producido intencionalmente por una fundidora.",
+                "El contaminante llegó únicamente por el agua del río Bravo."
+            ],
+            correcta: 0
+        },
+
+        {
+            pregunta: "¿Qué producto de construcción fue uno de los materiales que tuvo que ser localizado durante las labores posteriores al accidente radiológico de Chihuahua?",
+            opciones: [
+                "Ladrillos de arcilla sin esmaltar.",
+                "Varilla corrugada contaminada con Cobalto-60.",
+                "Tubos de PVC contaminados con mercurio.",
+                "Vidrio contaminado con arsénico."
+            ],
+            correcta: 1
+        },
+
+        {
+            pregunta: "¿Qué contaminante presente en aguas subterráneas es una de las razones del proyecto Agua Saludable para La Laguna?",
+            opciones: [
+                "Arsénico.",
+                "Mercurio elemental.",
+                "Cromo metálico.",
+                "Cadmio gaseoso."
+            ],
+            correcta: 0
+        },
+
+        {
+            pregunta: "¿Cuál de estos sitios mexicanos fue incluido en un estudio de exposición infantil al plomo junto con Ávalos, Morales y Cedral?",
+            opciones: [
+                "La Trinidad, Tlaxcala, una zona alfarera.",
+                "Cancún, Quintana Roo, una zona turística.",
+                "Mérida, Yucatán, una zona caliza.",
+                "Ensenada, Baja California, una zona pesquera."
+            ],
+            correcta: 0
+        },
+
+        {
+            pregunta: "¿Qué tienen en común Ávalos (Chihuahua), Morales y Cedral (San Luis Potosí) y La Trinidad (Tlaxcala) en el estudio citado?",
+            opciones: [
+                "Son sitios donde se investigó la exposición humana al plomo en comunidades mexicanas.",
+                "Son instalaciones que almacenaron Cobalto-60.",
+                "Son acuíferos contaminados exclusivamente con arsénico.",
+                "Son plantas nucleares mexicanas."
+            ],
+            correcta: 0
+        }
+    ];
 
 
     /* =============================================================
